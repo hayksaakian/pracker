@@ -1,0 +1,44 @@
+<%- model_class = Pixel -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:code) %>:</strong></dt>
+  <dd><%= request.env[:HTTP_HOST] %>/t/<%= @pixel.code %></dd>
+</dl>
+
+<%#= render @pixel.hits %>
+<% @hits = @pixel.hits.reverse %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:request_ip) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:agent) %></th>
+      <th><%= model_class.human_attribute_name(:referrer) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @hits.each do |hit| %>
+      <tr>
+        <td><%= hit.request_ip %></td>
+        <td><%=l hit.created_at %></td>
+        <td><%= hit.agent %></td>
+        <td><%= hit.referrer %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="form-actions">
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+              pixels_path, :class => 'btn'  %>
+  <%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_pixel_path(@pixel), :class => 'btn' %>
+  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              pixel_path(@pixel),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+</div>
