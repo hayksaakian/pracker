@@ -8,7 +8,6 @@
   <dd><%= request.env["HTTP_HOST"] %>/t/<%= @pixel.code %></dd>
 </dl>
 
-<%#= render @pixel.hits %>
 <% @hits = @pixel.hits.reverse %>
 <table class="table table-striped">
   <thead>
