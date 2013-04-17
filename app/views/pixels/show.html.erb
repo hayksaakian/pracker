@@ -1,12 +1,7 @@
 <%- model_class = Pixel -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human %></h1>
+  <h1><%=t '.title', :default => model_class.model_name.human %> - <%= request.env["HTTP_HOST"] %>/t/<%= @pixel.code %></h1>
 </div>
-
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:code) %>:</strong></dt>
-  <dd><%= request.env["HTTP_HOST"] %>/t/<%= @pixel.code %></dd>
-</dl>
 
 <% @hits = @pixel.hits.reverse %>
 <table class="table table-striped">
