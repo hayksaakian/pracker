@@ -1,13 +1,11 @@
 source 'https://rubygems.org'
-
 ruby '2.0.0'
-
 gem 'rails', '~> 3.2.12'
 gem 'unicorn-rails'
 
-gem 'mongoid'
-gem 'mongo'
 gem 'bson_ext'
+gem 'mongo'
+gem 'mongoid'
 
 gem 'foreman'
 
