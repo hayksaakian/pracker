@@ -7,7 +7,11 @@ class PixelsController < ApplicationController
 
   def track
     @code = params[:code]
-    @pixel = Pixel.find_or_create_by(:code => @code)
+    if @code
+      @pixel = Pixel.find_or_create_by(:code => @code)
+    else
+      @pixel = Pixel.find_or_create_by(:code => request.env["HTTP_REFERER"])
+    end
     @hit = @pixel.hits.new({:request_ip => request.remote_ip, :agent => request.env["HTTP_USER_AGENT"], :referrer => request.env["HTTP_REFERER"]})
     @hit.save
     # puts @hit.as_json
