@@ -4,8 +4,9 @@
 </div>
 
 <% @hits = @pixel.hits.reverse %>
-<h3><%= @hits.count.to_s +" "+ ("hit".pluralize(@hits.count)) %></h3>
-<h3><%= @pixel.uniques.count.to_s +" "+ ("hit".pluralize(@hits.count)) %></h3>
+<% @uniques = @pixel.uniques %>
+<h3><%= @hits.count.to_s + " " + "hit".pluralize(@hits.count) %></h3>
+<h3><%= @uniques.count.to_s + " " + "unique".pluralize(@hits.count) %></h3>
 <table class="table table-striped">
   <thead>
     <tr>
