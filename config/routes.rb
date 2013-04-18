@@ -3,6 +3,7 @@ Pracker::Application.routes.draw do
   root :to => 'pixels#index'
 
   get '/t/:code' => 'pixels#track', :as => :track
+  get '/t' => 'pixels#track'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
