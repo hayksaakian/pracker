@@ -1,10 +1,8 @@
 <%- model_class = Pixel -%>
-<div>
-  <img src="<%= track_path('test') %>">
-</div>
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
 </div>
+<img src="<%= track_path('test') %>" width='1' height='1'>
 <table class="table table-striped">
   <thead>
     <tr>
