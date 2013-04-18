@@ -7,6 +7,6 @@ class Pixel
   field :code, type: String
   
   def uniques
-  	self.hits.distinct(:request_ip)
+  	self.hits.distinct(:request_ip) || []
   end
 end
