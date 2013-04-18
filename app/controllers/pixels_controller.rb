@@ -9,7 +9,7 @@ class PixelsController < ApplicationController
   def track
     @code = params[:code]
     @pixel = Pixel.find_or_create_by(:code => @code)
-    @hit = @pixel.hits.new({:request_ip => request.env["REMOTE_ADDR"], :agent => request.env["HTTP_USER_AGENT"], :referrer => request.env["HTTP_REFERER"]})
+    @hit = @pixel.hits.new({:request_ip => request.remote_ip, :agent => request.env["HTTP_USER_AGENT"], :referrer => request.env["HTTP_REFERER"]})
     @hit.save
     # puts @hit.as_json
     send_blank_gif
