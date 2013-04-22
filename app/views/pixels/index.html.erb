@@ -2,12 +2,12 @@
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
 </div>
-<img src="<%= t_path %>" width='1' height='1'>
 <table class="table table-striped">
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:code) %></th>
       <th><%= model_class.human_attribute_name(:target_url) %></th>
+      <th><%= model_class.human_attribute_name(:CTR) %></th>
       <th><%= model_class.human_attribute_name(:hits) %></th>
       <th><%= model_class.human_attribute_name(:uniques) %></th>
       <th><%= model_class.human_attribute_name(:clicks) %></th>
@@ -21,7 +21,8 @@
     <% @pixels.each do |pixel| %>
       <tr>
         <td class='longtext'><%= link_to pixel.code, pixel_path(pixel) %></td>
-        <td class='longtext'><%= pixel.target_url %></td>
+        <td class='longtext'><%= link_to pixel.target_url, pixel.target_url if pixel.target_url %></td>
+        <td><%= pixel.ctr %>%</td>
         <td><%= pixel.hits.count %></td>
         <td><%= pixel.uniques.count %></td>
         <td><%= pixel.clicks.count %></td>

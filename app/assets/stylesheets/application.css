@@ -13,7 +13,7 @@
  */
 
 td.longtext {
-	max-width: 240px;
+	max-width: 200px;
 }
 .longtext {
 	overflow: hidden;

@@ -16,4 +16,7 @@ class Pixel
   def unique_clicks
   	self.hits.where(:clicked => true).distinct(:request_ip) || []
   end
+  def ctr
+    self.clicks.count > 0 ? (self.clicks.count / self.hits.count) * 100.00 : 0.000
+  end
 end
