@@ -45,7 +45,7 @@ class PixelsController < ApplicationController
   # GET /pixels
   # GET /pixels.json
   def index
-    @pixels = Pixel.all
+    @pixels = Pixel.all.order_by([:updated_at, :desc])
 
     respond_to do |format|
       format.html # index.html.erb
