@@ -16,6 +16,8 @@ class PixelsController < ApplicationController
       # => "http://www.google.com"
       @pixel = Pixel.where(target_url: @code_or_url).first_or_create
       @pixel.update_attribute(code: @code_or_url) if @pixel.code.blank? 
+    elsif @pixel.target_url.blank?
+      @pixel.update_attribute(target_url: @code_or_url)
     end
     # mongoid 3.1.0 style
     conditions = {:clicked => false, :request_ip => request.remote_ip, :agent => request.env["HTTP_USER_AGENT"], :referrer => request.env["HTTP_REFERER"]}
