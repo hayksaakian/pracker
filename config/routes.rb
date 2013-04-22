@@ -2,8 +2,13 @@ Pracker::Application.routes.draw do
   resources :pixels
   root :to => 'pixels#index'
 
+  # pixel tracking
   get '/t/:code' => 'pixels#track', :as => :track
   get '/t' => 'pixels#track'
+
+  # click tracking / link redirector
+  get '/r/*code_or_url' => 'pixels#visit', :as => :visit, :format => false, :constraints => {:url => /.*/}, :escape => false
+  # match "urls/*url" => "urls#index"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

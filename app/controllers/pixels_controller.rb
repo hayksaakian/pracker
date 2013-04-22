@@ -5,6 +5,27 @@ class PixelsController < ApplicationController
     send_data(Base64.decode64("R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="), :type => "image/gif", :disposition => "inline")
   end
 
+  def visit
+    @code_or_url = params[:code_or_url]
+    @pixel = Pixel.where(code: @code_or_url).first
+    if @pixel.nil?
+      # puts request.original_fullpath[3..-1]
+      # "/r/http://www.google.com"[3..-1]
+      # => "http://www.google.com"
+      @code_or_url = request.original_fullpath[3..-1]
+      @pixel = Pixel.where(target_url: @code_or_url).first_or_create
+    end
+    # mongoid 3.1.0 style
+    conditions = {:clicked => false, :request_ip => request.remote_ip, :agent => request.env["HTTP_USER_AGENT"], :referrer => request.env["HTTP_REFERER"]}
+    @hit = @pixel.hits.where(conditions).first
+    if @hit.nil?
+      @hit = @pixel.hits.create(conditions)
+    end
+    @hit.update_attribute(:clicked, true)
+    redirect_to @pixel.target_url
+    # redirect_to @code_or_url
+  end
+
   def track
     @code = params[:code]
     if @code
