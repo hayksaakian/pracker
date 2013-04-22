@@ -10,4 +10,10 @@ class Pixel
   def uniques
   	self.hits.distinct(:request_ip) || []
   end
+  def clicks
+  	self.hits.where(:clicked => true) || []
+  end
+  def unique_clicks
+  	self.hits.where(:clicked => true).distinct(:request_ip) || []
+  end
 end

@@ -7,8 +7,11 @@
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:code) %></th>
+      <th><%= model_class.human_attribute_name(:target_url) %></th>
       <th><%= model_class.human_attribute_name(:hits) %></th>
       <th><%= model_class.human_attribute_name(:uniques) %></th>
+      <th><%= model_class.human_attribute_name(:clicks) %></th>
+      <th><%= model_class.human_attribute_name(:unique_clicks) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%= model_class.human_attribute_name(:last_hit) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
@@ -17,11 +20,14 @@
   <tbody>
     <% @pixels.each do |pixel| %>
       <tr>
-        <td><%= link_to pixel.code, pixel_path(pixel) %></td>
+        <td class='longtext'><%= link_to pixel.code, pixel_path(pixel) %></td>
+        <td class='longtext'><%= pixel.target_url %></td>
         <td><%= pixel.hits.count %></td>
         <td><%= pixel.uniques.count %></td>
-        <td><%=l pixel.created_at %></td>
-        <td><%= l(pixel.hits.last.created_at) if pixel.hits.any? %></td>
+        <td><%= pixel.clicks.count %></td>
+        <td><%= pixel.unique_clicks.count %></td>
+        <td><%= time_tag pixel.created_at %></td>
+        <td><%= time_tag (pixel.hits.last.created_at) if pixel.hits.any? %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_pixel_path(pixel), :class => 'btn btn-mini' %>

@@ -2,13 +2,14 @@
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human %> - <%= request.env["HTTP_HOST"] %>/t/<%= @pixel.code %></h1>
 </div>
-
-<% @hits = @pixel.hits.reverse %>
-<% @uniques = @pixel.uniques %>
 <h3><%= @hits.count.to_s + " " + "hit".pluralize(@hits.count) %> and <%= @uniques.count.to_s + " " + "unique".pluralize(@hits.count) %></h3>
+<h3><%= @clicks.count.to_s + " " + "click".pluralize(@clicks.count) %> and 
+  <%= @unique_clicks.count.to_s + " unique " + "click".pluralize(@unique_clicks.count) %></h3>
+<h3>Redirect URL: <small><%= link_to @pixel.target_url %></small></h3>
 <table class="table table-striped">
   <thead>
     <tr>
+      <th><%= model_class.human_attribute_name(:click?) %></th>
       <th><%= model_class.human_attribute_name(:request_ip) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%= model_class.human_attribute_name(:agent) %></th>
@@ -18,6 +19,7 @@
   <tbody>
     <% @hits.each do |hit| %>
       <tr>
+        <td><%= hit.clicked ? "<i class='icon-ok'></i>".html_safe : "" %></td>
         <td><%= hit.request_ip %></td>
         <td><%=l hit.created_at %></td>
         <td><%= hit.agent %></td>

@@ -7,4 +7,6 @@ class Hit
   field :referrer, type: String
   field :agent, type: String
   field :request_ip, type: String
+
+  field :clicked, type: Boolean
 end

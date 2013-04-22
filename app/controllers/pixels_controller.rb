@@ -54,6 +54,10 @@ class PixelsController < ApplicationController
   # GET /pixels/1.json
   def show
     @pixel = Pixel.find(params[:id])
+    @hits = @pixel.hits.reverse
+    @clicks = @pixel.hits.where(:clicked => true) || []
+    @uniques = @pixel.uniques
+    @unique_clicks = @clicks.distinct(:request_ip) || []
 
     respond_to do |format|
       format.html # show.html.erb
