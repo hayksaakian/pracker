@@ -2,7 +2,7 @@ class Hit
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  embedded_in :pixel, touch: true
+  embedded_in :pixel#, touch: true
 
   field :referrer, type: String
   field :agent, type: String
