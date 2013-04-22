@@ -3,7 +3,7 @@ Pracker::Application.routes.draw do
   root :to => 'pixels#index'
 
   # pixel tracking
-  get '/t/:code' => 'pixels#track', :as => :track
+  get '/t/*code_or_url' => 'pixels#track', :as => :track, :format => false, :constraints => {:url => /.*/}, :escape => false
   get '/t' => 'pixels#track'
 
   # click tracking / link redirector

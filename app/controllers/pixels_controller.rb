@@ -7,13 +7,15 @@ class PixelsController < ApplicationController
 
   def visit
     @code_or_url = params[:code_or_url]
+    # get raw param string
+    @code_or_url = request.original_fullpath[3..-1]
     @pixel = Pixel.where(code: @code_or_url).first
     if @pixel.nil?
       # puts request.original_fullpath[3..-1]
       # "/r/http://www.google.com"[3..-1]
       # => "http://www.google.com"
-      @code_or_url = request.original_fullpath[3..-1]
       @pixel = Pixel.where(target_url: @code_or_url).first_or_create
+      @pixel.update_attribute(code: @code_or_url) if @pixel.code.blank? 
     end
     # mongoid 3.1.0 style
     conditions = {:clicked => false, :request_ip => request.remote_ip, :agent => request.env["HTTP_USER_AGENT"], :referrer => request.env["HTTP_REFERER"]}
@@ -27,8 +29,9 @@ class PixelsController < ApplicationController
   end
 
   def track
-    @code = params[:code]
-    if @code
+    @code = params[:code_or_url]
+    @code = request.original_fullpath[3..-1]
+    if !@code.blank?
       @pixel = Pixel.find_or_create_by(:code => @code)
     else
       @pixel = Pixel.find_or_create_by(:code => request.env["HTTP_REFERER"])
