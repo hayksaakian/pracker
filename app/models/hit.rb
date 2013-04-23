@@ -35,6 +35,7 @@ class Hit
   def geolocate
   	ip = self.request_ip.to_s
   	url = IP_LOOKUP_ENDPOINT + ip
+    require 'net/http'
     response = Net::HTTP.get(URI.parse(url))
     if response[ip] != nil
     	g = self.geo ? self.geo : self.geo.create
