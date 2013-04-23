@@ -50,7 +50,8 @@ class Hit
       if self.geo
         g = self.geo
       else
-        g = self.geo.new
+        g = Geo.new
+        self.geo = g
         g.save
       end
       puts response
