@@ -21,7 +21,7 @@
       <tr>
         <td><%= hit.clicked ? "<i class='icon-ok'></i>".html_safe : "" %></td>
         <td><%= hit.request_ip %></td>
-        <td><%= time_tag hit.created_at %></td>
+        <td><%= timeago(hit.created_at) %></td>
         <td><%= hit.agent %></td>
         <td><%= hit.referrer %></td>
       </tr>

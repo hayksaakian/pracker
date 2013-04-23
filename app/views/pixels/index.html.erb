@@ -27,8 +27,8 @@
         <td><%= pixel.uniques.count %></td>
         <td><%= pixel.clicks.count %></td>
         <td><%= pixel.unique_clicks.count %></td>
-        <td><%= time_tag pixel.created_at %></td>
-        <td><%= time_tag (pixel.hits.last.created_at) if pixel.hits.any? %></td>
+        <td><%= timeago pixel.created_at %></td>
+        <td><%= timeago (pixel.hits.last.created_at) if pixel.hits.any? %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_pixel_path(pixel), :class => 'btn btn-mini' %>
