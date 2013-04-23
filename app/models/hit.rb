@@ -54,7 +54,7 @@ class Hit
         self.geo = g
         g.save
       end
-      puts response
+      # puts response
     	g.update_attributes(response[ip])
     else
     	# no response
