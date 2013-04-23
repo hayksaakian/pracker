@@ -22,7 +22,7 @@
       <tr>
         <td class='longtext'><%= link_to pixel.code, pixel_path(pixel) %></td>
         <td class='longtext'><%= link_to pixel.target_url, pixel.target_url if pixel.target_url %></td>
-        <td><%= pixel.ctr %>%</td>
+        <td><%= pixel.ctr.round(3) %>%</td>
         <td><%= pixel.hits.count %></td>
         <td><%= pixel.uniques.count %></td>
         <td><%= pixel.clicks.count %></td>
