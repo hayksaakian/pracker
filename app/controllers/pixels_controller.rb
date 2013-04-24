@@ -5,6 +5,13 @@ class PixelsController < ApplicationController
     send_data(Base64.decode64("R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="), :type => "image/gif", :disposition => "inline")
   end
 
+  def flush
+    if request.post?
+      Pixel.flush(request.remote_ip)
+    end
+    redirect_to root_url
+  end
+
   def visit
     @code_or_url = params[:code_or_url]
     # get raw param string

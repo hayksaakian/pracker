@@ -6,6 +6,9 @@ Pracker::Application.routes.draw do
   get '/t/*code_or_url' => 'pixels#track', :as => :track, :format => false, :constraints => {:url => /.*/}, :escape => false
   get '/t' => 'pixels#track'
 
+  post '/flush' => 'pixels#flush'
+  get '/flush' => 'pixels#flush'
+
   # click tracking / link redirector
   get '/r/*code_or_url' => 'pixels#visit', :as => :visit, :format => false, :constraints => {:url => /.*/}, :escape => false
   # match "urls/*url" => "urls#index"

@@ -38,18 +38,22 @@
     <div class="navbar navbar-inverse">
       <div class="navbar-inner">
         <div class="container-fluid">
-          <!-- <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
+          <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-           -->
           <a class="brand" href="<%= root_url %>">1gf.us - <strong>P</strong>ixel T<strong>racker</strong></a>
           <div class="container-fluid nav-collapse">
             <ul class="nav">
               <li><%= link_to "/t/ is for pixel tracking", "#" %></li>
               <li><%= link_to "/r/ is for redirects", "#" %></li>
+              <li>
+              </li>
             </ul>
+              <div class="pull-right">
+                <%= link_to "Flush my IP Address (#{request.remote_ip})", flush_path, :method => :post, :data => { :confirm => t('.confirm', :default => 'Are you sure you want to delete all hits with this IP address?') }, :class => 'btn btn-danger' %>
+              </div>
           </div>
           <!--/.nav-collapse -->
         </div>
