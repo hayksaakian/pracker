@@ -11,7 +11,7 @@ class Hit
 
   field :clicked, type: Boolean, default: false
 
-  before_save :consider_geolocating
+  # before_save :consider_geolocating
 
   # http://www.datasciencetoolkit.org/ip2coordinates/71.217.122.251
   # http://www.datasciencetoolkit.org/ip2coordinates/IP_ADDRESS
