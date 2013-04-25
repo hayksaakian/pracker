@@ -20,7 +20,7 @@
     <% @hits.each do |hit| %>
       <tr>
         <td><%= hit.clicked ? "<i class='icon-ok'></i>".html_safe : "" %></td>
-        <td><%= hit.request_ip %></td>
+        <td><%= hit.request_ip %><%= ("<br>"+hit.geo.to_pretty_s).html_safe if hit.geo %></td>
         <td><%= timeago(hit.created_at) %></td>
         <td><%= hit.agent %></td>
         <td><%= hit.referrer %></td>

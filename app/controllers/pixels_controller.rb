@@ -27,7 +27,7 @@ class PixelsController < ApplicationController
       @pixel.update_attribute(:target_url, @code_or_url)
     end
     # mongoid 3.1.0 style
-    conditions = {:clicked => false, :request_ip => request.remote_ip, :agent => request.env["HTTP_USER_AGENT"], :referrer => request.env["HTTP_REFERER"]}
+    conditions = {:clicked => false, :request_ip => request.remote_ip, :agent => request.user_agent, :referrer => request.referrer}
     @hit = @pixel.hits.where(conditions).first
     if @hit.nil?
       @hit = @pixel.hits.create(conditions)
@@ -43,9 +43,9 @@ class PixelsController < ApplicationController
     if !@code.blank?
       @pixel = Pixel.find_or_create_by(:code => @code)
     else
-      @pixel = Pixel.find_or_create_by(:code => request.env["HTTP_REFERER"])
+      @pixel = Pixel.find_or_create_by(:code => request.referrer)
     end
-    @hit = @pixel.hits.new({:request_ip => request.remote_ip, :agent => request.env["HTTP_USER_AGENT"], :referrer => request.env["HTTP_REFERER"]})
+    @hit = @pixel.hits.new({:request_ip => request.remote_ip, :agent => request.user_agent, :referrer => request.referrer})
     @hit.save
     # puts @hit.as_json
     send_blank_gif

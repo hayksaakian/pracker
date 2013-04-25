@@ -1,11 +1,11 @@
 <%- model_class = Pixel -%>
 <div class='row-fluid'>
-  <h1 class="pull-left"><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %>
   <%= link_to t('.new', :default => t("helpers.links.new")),
           new_pixel_path,
-          :class => 'btn btn-large btn-primary pull-right' %>
+          :class => 'btn btn-large btn-success pull-right' %></h1>
 </div>
-<table class="table table-striped">
+<table class="table table-striped table-bordered">
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:code) %></th>
