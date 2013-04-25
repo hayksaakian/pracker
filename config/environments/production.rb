@@ -1,6 +1,12 @@
 Pracker::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  # for new relic
+  if defined? Unicorn
+    ::NewRelic::Agent.manual_start()
+    ::NewRelic::Agent.after_fork(:force_reconnect => true)
+  end
+
   # Code is not reloaded between requests
   config.cache_classes = true
 
