@@ -38,6 +38,7 @@ gem 'cancan'
 
 gem 'simple_form'
 gem 'mustache'
+gem 'agent_orange'
 
 # trying out new relic
 gem 'newrelic_rpm'

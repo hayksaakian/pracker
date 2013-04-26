@@ -4,6 +4,7 @@ class Hit
 
   embedded_in :pixel#, touch: true
   embeds_one :geo
+  embeds_one :device
 
   field :referrer, type: String, default: ""
   field :agent, type: String, default: ""
@@ -11,7 +12,7 @@ class Hit
 
   field :clicked, type: Boolean, default: false
 
-  after_save :consider_geolocating
+  after_save :consider_geolocating, :consider_device_analysis
 
   # http://www.datasciencetoolkit.org/ip2coordinates/71.217.122.251
   # http://www.datasciencetoolkit.org/ip2coordinates/IP_ADDRESS
@@ -51,12 +52,20 @@ class Hit
     http_response = Net::HTTP.get_response(URI.parse(url))   
     if http_response.is_a?(Net::HTTPSuccess) 
       json_response = JSON.parse(http_response.body)
-      response.merge!(json_response[ip])
+      response.merge!(json_response[ip]) unless json_response[ip].nil?
     end
     unless self.geo
-      self.geo = Geo.create
+      self.geo = Geo.new
+      self.geo.save
     end
     # puts response
     self.geo.update_attributes(response)
+  end
+
+  def consider_device_analysis
+
+  end
+  def analyze_device
+    
   end
 end
