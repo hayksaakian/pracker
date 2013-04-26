@@ -45,6 +45,6 @@ class Geo
         results.push(self[c])
       end
     end
-    return results.join(',')
+    return results.join(', ')
   end
 end
