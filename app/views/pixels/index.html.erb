@@ -25,7 +25,7 @@
     <% @pixels.each do |pixel| %>
       <tr>
         <td><%= link_to "Show", pixel_path(pixel), :class => 'btn btn-primary' %></td>
-        <td><pre><%= pixel_path(pixel) %></pre></td>
+        <td><pre><%= pixel.code %></pre></td>
         <td><pre><%= link_to pixel.target_url, pixel.target_url if pixel.target_url %></pre></td>
         <td><%= pixel.ctr.round(3) %>%</td>
         <td><%= pixel.hits.count %></td>
