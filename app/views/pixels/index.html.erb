@@ -12,8 +12,10 @@
       <th><%= model_class.human_attribute_name(:tracking_code) %></th>
       <th><%= model_class.human_attribute_name(:target_url) %></th>
       <th><%= model_class.human_attribute_name(:CTR) %></th>
-      <th><%= model_class.human_attribute_name(:hits) %></th>
-      <th><%= model_class.human_attribute_name(:uniques) %></th>
+      <th>
+        <%= model_class.human_attribute_name(:uniques) %> out of total 
+        <%= model_class.human_attribute_name(:hits) %>
+      </th>
       <th><%= model_class.human_attribute_name(:clicks) %></th>
       <th><%= model_class.human_attribute_name(:unique_clicks) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
@@ -25,13 +27,17 @@
     <% @pixels.each do |pixel| %>
       <tr>
         <td><%= link_to "Show", pixel_path(pixel), :class => 'btn btn-primary' %></td>
-        <td><pre><%= pixel.code %></pre></td>
+        <td><pre><%= pixel.code ? pixel.code : '(target_url)' %></pre></td>
         <td><pre><%= link_to pixel.target_url, pixel.target_url if pixel.target_url %></pre></td>
         <td><%= pixel.ctr.round(3) %>%</td>
-        <td><%= pixel.hits.count %></td>
-        <td><%= pixel.uniques.count %></td>
-        <td><%= pixel.clicks.count %></td>
-        <td><%= pixel.unique_clicks.count %></td>
+        <td>
+          <%= pixel.uniques.count %> U /
+          <%= pixel.hits.count %> T
+        </td>
+        <td>
+          <%= pixel.unique_clicks.count %> UC / 
+          <%= pixel.clicks.count %> TC
+        </td>
         <td><%= timeago pixel.created_at %></td>
         <td><%= timeago (pixel.hits.last.created_at) if pixel.hits.any? %></td>
         <td>
