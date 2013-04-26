@@ -12,6 +12,7 @@ class Geo
   field :postal_code, type: String, default: ""
   field :region, type: String, default: ""
   field :locality, type: String, default: ""
+  field :ip, type: String, default: ""
   
   # http://www.datasciencetoolkit.org/ip2coordinates/71.217.122.251
   # http://www.datasciencetoolkit.org/ip2coordinates/IP_ADDRESS

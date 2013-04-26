@@ -11,7 +11,7 @@ class Hit
 
   field :clicked, type: Boolean, default: false
 
-  # before_save :consider_geolocating
+  after_save :consider_geolocating
 
   # http://www.datasciencetoolkit.org/ip2coordinates/71.217.122.251
   # http://www.datasciencetoolkit.org/ip2coordinates/IP_ADDRESS
@@ -35,8 +35,10 @@ class Hit
 	# }
 
   def consider_geolocating
-    if self.request_ip_changed?
-      self.geolocate
+    if !self.request_ip.blank?
+      if self.geo.nil? || self.geo.ip != self.request_ip
+        self.geolocate
+      end
     end
   end
 
@@ -44,20 +46,17 @@ class Hit
   	ip = self.request_ip.to_s
   	url = IP_LOOKUP_ENDPOINT + ip
     require 'net/http'
-    response = Net::HTTP.get(URI.parse(url))
-    response = JSON.parse(response)
-    if response[ip] != nil 
-      if self.geo
-        g = self.geo
-      else
-        g = Geo.new
-        self.geo = g
-        g.save
-      end
-      # puts response
-    	g.update_attributes(response[ip])
-    else
-    	# no response
+    response = {"ip" => ip}
+
+    http_response = Net::HTTP.get_response(URI.parse(url))   
+    if http_response.is_a?(Net::HTTPSuccess) 
+      json_response = JSON.parse(http_response.body)
+      response.merge!(json_response[ip])
     end
+    unless self.geo
+      self.geo = Geo.create
+    end
+    # puts response
+    self.geo.update_attributes(response)
   end
 end

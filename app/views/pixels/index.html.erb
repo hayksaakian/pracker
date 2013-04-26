@@ -8,7 +8,8 @@
 <table class="table table-striped table-bordered">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:code) %></th>
+      <th></th>
+      <th><%= model_class.human_attribute_name(:tracking_code) %></th>
       <th><%= model_class.human_attribute_name(:target_url) %></th>
       <th><%= model_class.human_attribute_name(:CTR) %></th>
       <th><%= model_class.human_attribute_name(:hits) %></th>
@@ -23,7 +24,8 @@
   <tbody>
     <% @pixels.each do |pixel| %>
       <tr>
-        <td class='longtext'><%= link_to pixel.code, pixel_path(pixel) %></td>
+        <td><%= link_to "Show", pixel_path(pixel) %></td>
+        <td class='longtext'><%= pixel_path(pixel) %></td>
         <td class='longtext'><%= link_to pixel.target_url, pixel.target_url if pixel.target_url %></td>
         <td><%= pixel.ctr.round(3) %>%</td>
         <td><%= pixel.hits.count %></td>
