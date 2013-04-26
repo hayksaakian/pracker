@@ -13,11 +13,13 @@
       <th><%= model_class.human_attribute_name(:target_url) %></th>
       <th><%= model_class.human_attribute_name(:CTR) %></th>
       <th>
-        <%= model_class.human_attribute_name(:uniques) %> out of total 
+        <%= model_class.human_attribute_name(:uniques) %> out of all  
         <%= model_class.human_attribute_name(:hits) %>
       </th>
-      <th><%= model_class.human_attribute_name(:clicks) %></th>
-      <th><%= model_class.human_attribute_name(:unique_clicks) %></th>
+      <th>
+        <%= model_class.human_attribute_name(:unique_clicks) %> out of all 
+        <%= model_class.human_attribute_name(:clicks) %>
+      </th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%= model_class.human_attribute_name(:last_hit) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
