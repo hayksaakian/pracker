@@ -22,7 +22,7 @@ class PixelsController < ApplicationController
       # "/r/http://www.google.com"[3..-1]
       # => "http://www.google.com"
       @pixel = Pixel.where(target_url: @code_or_url).first_or_create
-      @pixel.update_attribute(code: @code_or_url) if @pixel.code.blank? 
+      @pixel.update_attribute(:code, @code_or_url) if @pixel.code.blank? 
     elsif @pixel.target_url.blank?
       @pixel.update_attribute(:target_url, @code_or_url)
     end
