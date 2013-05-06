@@ -74,13 +74,27 @@ class Hit
     self.update_attribute(:nice_ua, JSON.parse(ua.to_json))
   end
   def pretty_ua
+    # deflt = {'device' => {'engine' => {'browser' => {'name' => "", 'version' => {'major' => ""}}}, 'operating_system' => {'name' => ""}, 'name' => ""}}
     ua = self.nice_ua == {} ? nil : self.nice_ua
-    if ua != nil
+    if !ua.nil?
       rtvl = ""
-      rtvl += (ua['device']['engine']['browser']['name'] + " ") if ua['device']['engine']['browser']['name'] != nil
-      rtvl += (ua['device']['engine']['browser']['version']['major'] + " on a ") if ua['device']['engine']['browser']['version']['major'] != nil
-      rtvl += (ua['device']['operating_system']['name'] + " ") if ua['device']['operating_system']['name'] != nil
-      rtvl += (ua['device']['name']) if ua['device']['name'] != nil
+      # consider changing += to <<
+      # TODO clean this UP. It's ugly as hell
+      if ua['device'] != nil && ua['device'] != {} && ua['device'].is_a? Hash
+        engine = ua['device'].try(:fetch, 'engine', {})
+        if engine.try(:fetch, 'browser', {}) != {}
+          rtvl += engine['browser'].try(:fetch, 'name', "")
+          version = engine['browser'].try(:fetch, 'version', {})
+          rtvl += version.try(:fetch, 'major', "")
+        end
+        operating_system = ua['device'].try(:fetch, 'operating_system', {})
+        rtvl += operating_system.try(:fetch, 'name', "")
+        rtvl += ua['device'].try(:fetch, 'name', "")
+      end
+      # rtvl += (ua['device']['engine']['browser']['name'] + " ") if ua.try(:[], 'device']['engine']['browser']['name'])
+      # rtvl += (ua['device']['engine']['browser']['version']['major'] + " on a ") if ua['device']['engine']['browser']['version']['major'] != nil
+      # rtvl += (ua['device']['operating_system']['name'] + " ") if ua['device']['operating_system']['name'] != nil
+      # rtvl += (ua['device']['name']) if ua['device']['name'] != nil
       return rtvl
     else
       return ""
