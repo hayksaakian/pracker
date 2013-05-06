@@ -4,8 +4,8 @@ class Pixel
 
   embeds_many :hits
 
-  field :code, type: String
-  field :target_url, type: String
+  field :code, type: String, default: ""
+  field :target_url, type: String, default: ""
   
   def uniques
   	self.hits.distinct(:request_ip) || []
@@ -24,5 +24,12 @@ class Pixel
     Pixel.where(:'hits.request_ip' => ip).each do |p|
       p.hits.where(:request_ip => ip).destroy
     end
+  end
+
+  def code_or_default
+    return self.code.blank? ? self.target_url : self.code
+  end
+  def target_url_or_default
+    return self.target_url?.blank? ? self.code : self.target_url
   end
 end

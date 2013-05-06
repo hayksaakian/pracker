@@ -1,11 +1,42 @@
 <%- model_class = Pixel -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human %> - <%= request.env["HTTP_HOST"] %>/t/<%= @pixel.code %></h1>
+<div class="page-header row-fluid">
+  <h1 class='pull-left'><%=t '.title', :default => model_class.model_name.human %></h1>
+  <div class='pull-right'>
+    <h4>tracking src="http://<%= request.env["HTTP_HOST"] %>/t/<%= @pixel.code_or_default %>"</h4>
+    <h4>redirect href="http://<%= request.env["HTTP_HOST"] %>/r/<%= @pixel.target_url_or_default %>"</h4>
+  </div>
 </div>
-<h3><%= @hits.count.to_s + " " + "hit".pluralize(@hits.count) %> and <%= @uniques.count.to_s + " " + "unique".pluralize(@hits.count) %></h3>
-<h3><%= @clicks.count.to_s + " " + "click".pluralize(@clicks.count) %> and 
-  <%= @unique_clicks.count.to_s + " unique " + "click".pluralize(@unique_clicks.count) %></h3>
-<h3>Redirect URL: <small><%= link_to @pixel.target_url %></small></h3>
+<div class='row-fluid'>
+<div class='pull-left'>
+  <h3><%= @uniques.count.to_s + " " + "unique".pluralize(@uniques.count) %> out of <%= @hits.count.to_s + " " + "hit".pluralize(@hits.count) %> 
+   | <%= @unique_clicks.count.to_s + " unique " + "click".pluralize(@unique_clicks.count) %> out of 
+   <%= @clicks.count.to_s %>    
+  </h3>
+</div>
+<form method='get' class='form-inline pull-right' style='margin: 14px;'>
+  <fieldset>
+    Show 
+      <%= select_tag 'days', options_for_select(["1", "3", "7", "30", '9001' ], @days.count.to_s), :class => 'input-mini' %>
+      <label class="checkbox">
+        <%= check_box_tag 'unique', true, params[:unique] %> Only Unique?
+      </label>
+    <button type="submit" class="btn btn-primary">Days Back</button>
+  </fieldset>
+</form>
+</div>
+
+<small>Redirect URL:  <%=  @pixel.target_url.blank? ? "(not yet specified)" : link_to(@pixel.target_url) %></small>
+<div class='well'>
+  <div id="chart" style="width:100%; height:400px;">
+  </div>
+</div>
+<script type="text/javascript">
+  var chart_opts = {'categories':[], 'series':[]}
+  chart_opts['categories'] = <%= @days.map{|t| t.to_s(:rfc822) }.to_json.html_safe %>
+  chart_opts['series'][0] = <%= @totals.to_json.html_safe %>
+  chart_opts['series'][1] = <%= @click_totals.to_json.html_safe %>
+  console.log(chart_opts)
+</script>
 <table class="table table-striped">
   <thead>
     <tr>

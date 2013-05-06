@@ -70,6 +70,29 @@ class PixelsController < ApplicationController
     @clicks = @pixel.hits.where(:clicked => true) || []
     @uniques = @pixel.uniques
     @unique_clicks = @clicks.distinct(:request_ip) || []
+    today = Time.now.in_time_zone.to_date
+    @days = []
+    d = params[:days]
+    just_uniques = params[:unique].present? ? true : false
+    if d && !d.blank?
+      num_days = d.to_i
+      @days = ((today-num_days)..today).to_a
+    else
+      @days = ((@pixel.created_at.in_time_zone.to_date)..today).to_a
+    end
+    @totals = []
+    @click_totals = []
+    @days.each do |d|
+      # these nasty queries should be somewhere else
+      hits = @pixel.hits.where({:created_at.gt => (d-1), :created_at.lte => d})
+      if just_uniques
+        @totals.push(hits.distinct(:request_ip).count) # TODO make sure these .count's actually do what they should
+        @click_totals.push(hits.where(:clicked => true).distinct(:request_ip).count)
+      else
+        @totals.push(hits.count) # TODO make sure these .count's actually do what they should
+        @click_totals.push(hits.where(:clicked => true).count)
+      end
+    end
 
     respond_to do |format|
       format.html # show.html.erb

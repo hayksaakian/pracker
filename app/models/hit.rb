@@ -4,7 +4,7 @@ class Hit
 
   embedded_in :pixel#, touch: true
   embeds_one :geo
-  field :nice_ua, type: AgentOrange::UserAgent
+  field :nice_ua, type: Hash, default: {}
 
   field :referrer, type: String, default: ""
   field :agent, type: String, default: ""
@@ -64,13 +64,13 @@ class Hit
 
   def consider_device_analysis
     if !self.agent.blank?
-      if self.nice_ua.nil? || self.nice_ua.user_agent_string != self.agent
+      if self.nice_ua == {} || self.nice_ua['user_agent_string'] != self.agent
         self.analyze_device
       end
     end
   end
   def analyze_device
     ua = AgentOrange::UserAgent.new(self.agent)
-    self.update_attribute(:device, ua)
+    self.update_attribute(:nice_ua, JSON.parse(ua.to_json))
   end
 end
