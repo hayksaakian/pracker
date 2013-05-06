@@ -20,17 +20,18 @@ group :assets do
 
   gem 'uglifier', '>= 1.0.3'
 
-	gem 'therubyracer', :require => 'v8'
-	# gem "therubyracer"#, '~> 0.10.2'
-	# gem "less"
+  # comment out for netbook:
+  gem "libv8", "3.11.8.13"
+	gem "therubyracer", :require => 'v8'
 	gem "less-rails"
-	gem "twitter-bootstrap-rails"#, "~> 2.1.2"
+	gem "twitter-bootstrap-rails"
 end
 
 gem 'jquery-rails'
 
 gem 'jquery-turbolinks'
 gem 'turbolinks'
+gem 'highcharts-rails'
 gem 'cache_digests'
 
 gem "devise", "~> 2.2.3"

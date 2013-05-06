@@ -29,8 +29,18 @@
     <% @pixels.each do |pixel| %>
       <tr>
         <td><%= link_to "Show", pixel_path(pixel), :class => 'btn btn-primary' %></td>
-        <td><pre><%= pixel.code ? pixel.code : '(target_url)' %></pre></td>
-        <td><pre><%= link_to pixel.target_url, pixel.target_url if pixel.target_url %></pre></td>
+        <td>
+          <pre>
+            <%= pixel.code ? pixel.code : '(target_url)' %>
+          </pre>
+        </td>
+        <td>
+          <pre>
+            <small>
+              <%= link_to pixel.target_url, pixel.target_url if pixel.target_url %>
+            </small>
+          </pre>
+        </td>
         <td><%= pixel.ctr.round(3) %>%</td>
         <td>
           <%= pixel.uniques.count %> U /
