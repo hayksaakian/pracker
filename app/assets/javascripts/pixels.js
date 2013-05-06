@@ -3,7 +3,7 @@
 // # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 $(document).ready(function() { 
   if ($('#chart').length > 0) {
-    console.log(chart_opts)
+    // console.log(chart_opts)
     Highcharts.setOptions({
         chart: {
             backgroundColor: {
