@@ -76,10 +76,12 @@ class Hit
   def pretty_ua
     ua = self.nice_ua == {} ? nil : self.nice_ua
     if ua != nil
-      rtvl = ua['device']['engine']['browser']['name'] + " "
-      rtvl += ua['device']['engine']['browser']['version']['major'] + " on a "
-      rtvl += ua['device']['operating_system']['name'] + " "
-      rtvl += ua['device']['name']
+      rtvl = ""
+      rtvl += (ua['device']['engine']['browser']['name'] + " ") if ua['device']['engine']['browser']['name'] != nil
+      rtvl += (ua['device']['engine']['browser']['version']['major'] + " on a ") if ua['device']['engine']['browser']['version']['major'] != nil
+      rtvl += (ua['device']['operating_system']['name'] + " ") if ua['device']['operating_system']['name'] != nil
+      rtvl += (ua['device']['name']) if ua['device']['name'] != nil
+      return rtvl
     else
       return ""
     end
