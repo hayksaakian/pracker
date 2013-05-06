@@ -77,19 +77,21 @@ class Hit
     ua = self.nice_ua == {} ? nil : self.nice_ua
     if !ua.nil?
       rtvl = ""
+      rtvls = []
       # consider changing += to <<
       # TODO clean this UP. It's ugly as hell
-      # if ua['device'] != nil && ua['device'] != {} && ua['device'].is_a? Hash
-      #   engine = ua['device'].try(:fetch, 'engine', {})
-      #   if engine.try(:fetch, 'browser', {}) != {}
-      #     rtvl += engine['browser'].try(:fetch, 'name', "")
-      #     version = engine['browser'].try(:fetch, 'version', {})
-      #     rtvl += version.try(:fetch, 'major', "")
-      #   end
-      #   operating_system = ua['device'].try(:fetch, 'operating_system', {})
-      #   rtvl += operating_system.try(:fetch, 'name', "")
-      #   rtvl += ua['device'].try(:fetch, 'name', "")
-      # end
+      if ua['device'] != nil && ua['device'] != {} && ua['device'].is_a?(Hash)
+        engine = ua['device'].try(:fetch, 'engine', {})
+        if engine.try(:fetch, 'browser', {}) != {}
+          rtvls.push(engine['browser'].try(:fetch, 'name', ""))
+          version = engine['browser'].try(:fetch, 'version', {})
+          rtvls.push(version.try(:fetch, 'major', ""))
+        end
+        operating_system = ua['device'].try(:fetch, 'operating_system', {})
+        rtvls.push(operating_system.try(:fetch, 'name', ""))
+        rtvls.push(ua['device'].try(:fetch, 'name', ""))
+      end
+      rtvl = rtvls.join(" ")
       # rtvl += (ua['device']['engine']['browser']['name'] + " ") if ua.try(:[], 'device']['engine']['browser']['name'])
       # rtvl += (ua['device']['engine']['browser']['version']['major'] + " on a ") if ua['device']['engine']['browser']['version']['major'] != nil
       # rtvl += (ua['device']['operating_system']['name'] + " ") if ua['device']['operating_system']['name'] != nil
