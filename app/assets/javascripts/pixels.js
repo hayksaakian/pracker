@@ -11,7 +11,7 @@ $(document).ready(function() {
                 stops: [
                     [0, 'rgb(255, 255, 255)'],
                     [1, 'rgb(240, 240, 255)']
-                    ]
+                ]
             },
             plotBackgroundColor: 'rgba(255, 255, 255, .9)',
             plotShadow: true,

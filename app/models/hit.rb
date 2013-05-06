@@ -73,4 +73,15 @@ class Hit
     ua = AgentOrange::UserAgent.new(self.agent)
     self.update_attribute(:nice_ua, JSON.parse(ua.to_json))
   end
+  def pretty_ua
+    ua = self.nice_ua == {} ? nil : self.nice_ua
+    if ua != nil
+      rtvl = ua['device']['engine']['browser']['name'] + " "
+      rtvl += ua['device']['engine']['browser']['version']['major'] + " on a "
+      rtvl += ua['device']['operating_system']['name'] + " "
+      rtvl += ua['device']['name']
+    else
+      return ""
+    end
+  end
 end
