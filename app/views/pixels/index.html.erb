@@ -33,7 +33,7 @@
           <pre><%= pixel.code ? pixel.code : '(target_url)' %></pre>
         </td>
         <td>
-          <small><pre><%= link_to pixel.target_url, pixel.target_url if pixel.target_url %></pre></small>
+          <small><pre><%= link_to pixel.target_url, pixel.target_url, :rel => 'nofollow' if pixel.target_url %></pre></small>
         </td>
         <td><%= pixel.ctr.round(3) %>%</td>
         <td>
