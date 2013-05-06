@@ -82,13 +82,13 @@ class PixelsController < ApplicationController
     end
     @totals = []
     @click_totals = []
-    puts @days
+    # puts @days
     @days.each do |d|
       # these nasty queries should be somewhere else
-      puts 'after'
-      puts (d.to_time - 1)
-      puts 'before or on'
-      puts d.to_time
+      # puts 'after'
+      # puts (d.to_time - 1)
+      # puts 'before or on'
+      # puts d.to_time
       hits = @pixel.hits.where({:created_at.gt => (d - 1).to_time, :created_at.lte => d.to_time})
       if just_uniques
         @totals.push(hits.distinct(:request_ip).count) # TODO make sure these .count's actually do what they should
