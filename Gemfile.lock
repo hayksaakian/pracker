@@ -91,6 +91,9 @@ GEM
       moped (~> 1.4.2)
       origin (~> 1.0)
       tzinfo (~> 0.3.22)
+    mongoid_taggable (1.1.1)
+      mongoid (>= 3)
+      rake
     moped (1.4.5)
     multi_json (1.7.2)
     mustache (0.99.4)
@@ -186,6 +189,7 @@ DEPENDENCIES
   libv8 (= 3.11.8.13)
   mongo
   mongoid
+  mongoid_taggable
   mustache
   newrelic_rpm
   rails (~> 3.2.12)

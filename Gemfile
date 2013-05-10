@@ -6,6 +6,7 @@ gem 'unicorn-rails'
 gem 'bson_ext'
 gem 'mongo'
 gem 'mongoid'
+gem 'mongoid_taggable'
 
 gem 'foreman'
 

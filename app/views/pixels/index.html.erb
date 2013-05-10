@@ -9,8 +9,7 @@
   <thead>
     <tr>
       <th></th>
-      <th><%= model_class.human_attribute_name(:tracking_code) %></th>
-      <th><%= model_class.human_attribute_name(:target_url) %></th>
+      <th><%= model_class.human_attribute_name(:tracking_code) %> | <%= model_class.human_attribute_name(:target_url) %></th>
       <th><%= model_class.human_attribute_name(:CTR) %></th>
       <th>
         <%= model_class.human_attribute_name(:uniques) %> out of all  
@@ -31,8 +30,7 @@
         <td><%= link_to "Show", pixel_path(pixel), :class => 'btn btn-primary' %></td>
         <td>
           <pre><%= pixel.code ? pixel.code : '(target_url)' %></pre>
-        </td>
-        <td>
+          <br>
           <small><pre><%= link_to pixel.target_url, pixel.target_url, :rel => 'nofollow' if pixel.target_url %></pre></small>
         </td>
         <td><%= pixel.ctr.round(3) %>%</td>
