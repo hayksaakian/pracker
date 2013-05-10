@@ -12,7 +12,7 @@ class Hit
 
   field :clicked, type: Boolean, default: false
 
-  after_save :consider_geolocating, :consider_device_analysis
+  after_save :consider_geolocating, :consider_device_analysis, :touch_up
 
   # http://www.datasciencetoolkit.org/ip2coordinates/71.217.122.251
   # http://www.datasciencetoolkit.org/ip2coordinates/IP_ADDRESS
@@ -100,5 +100,8 @@ class Hit
     else
       return ""
     end
+  end
+  def touch_up
+    self.pixel.touch
   end
 end
