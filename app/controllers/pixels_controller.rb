@@ -56,8 +56,13 @@ class PixelsController < ApplicationController
   def index
     @tags = params[:tag].present? ? params[:tag] : ""
     # might want to sanitize
-    @pixels = Pixel.tagged_with_all(@tags) unless @tags.blank?
-    @pixels = Pixel.all if @tags.blank?
+    if @tags.blank?
+      @pixels = Pixel.all
+      @tags = Pixel.tags_with_weight
+    else
+      @pixels = Pixel.tagged_with_all(@tags)
+      @tags = @tags.split(',')
+    end
     @pixels = @pixels.order_by([:updated_at, :desc]) 
 
     respond_to do |format|

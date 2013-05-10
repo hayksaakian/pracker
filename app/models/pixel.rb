@@ -2,13 +2,12 @@ class Pixel
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Taggable
-  
+
   embeds_many :hits
 
   field :code, type: String, default: ""
   field :target_url, type: String, default: ""
 
-  
   def uniques
   	self.hits.distinct(:request_ip) || []
   end

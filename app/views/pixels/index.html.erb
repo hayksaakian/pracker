@@ -1,24 +1,31 @@
 <%- model_class = Pixel -%>
 <div class='row-fluid'>
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %>
-  <%= link_to t('.new', :default => t("helpers.links.new")),
-          new_pixel_path,
-          :class => 'btn btn-large btn-success pull-right' %> 
-          <% unless @tags.blank? %>
-            <small>tagged with 
-              <% @tags.split(',').each_with_index do |tag, i| %>
-                <%= ", " if i != 0 %>"<%= tag %>"
-              <% end %>
-            </small>
-          <% end %>
-
-           </h1>
+  <h1 class='span4'><%= t('.title', :default => model_class.model_name.human.pluralize) %>
+    <% if @tags.present? %>
+      <small>tagged with:</small>
+    <% end %>
+ </h1>
+<div class='span8'>
+  <div class='pull-left' style="margin:25px auto;">
+    <% @tags.each_with_index do |tag, i| %><%
+      retval = "" 
+      if tag.is_a? Array
+        href = pixels_path(:tag => tag[0])
+        retval = ("<span class='label label-inverse'>#{tag[0].to_s} <span class='badge'>#{tag[1].to_i.to_s}</span></span>").html_safe
+      elsif tag.is_a? String
+        href = pixels_path(:tag => tag)
+        retval = "<span class='label label-inverse'>#{tag}</span>".html_safe
+      end %><a href="<%= href %>"><%= retval %></a>
+    <% end %>
+  </div>
+</div>
 </div>
 <table class="table table-striped table-bordered">
   <thead>
     <tr>
-      <th></th>
-      <th><%= model_class.human_attribute_name(:tracking_code) %><br><%= model_class.human_attribute_name(:target_url) %></th>
+      <th><%= link_to t('.new', :default => t("helpers.links.new")),
+  new_pixel_path, :class => 'btn btn-large btn-block btn-success' %></th>
+      <th><%= model_class.human_attribute_name(:tracking_code) %>,<br><%= model_class.human_attribute_name(:target_url) %></th>
       <!-- TODO color CTR based on reletive rank in the tag -->
       <th><%= model_class.human_attribute_name(:CTR) %></th>
       <th>
