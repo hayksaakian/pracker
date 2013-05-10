@@ -1,9 +1,15 @@
 <%- model_class = Pixel -%>
 <div class="page-header row-fluid">
-  <h1 class='pull-left'><%=t '.title', :default => model_class.model_name.human %></h1>
+  <h1 class='pull-left'><%=t '.title', :default => model_class.model_name.human %>
+    <% if @pixel.tags_array.any? %>
+      <small>tagged with 
+        <% @pixel.tags_array.each_with_index do |tag, i| %><%= ", " if i != 0 %> "<%= link_to tag, pixels_path(:tag => tag) %>"<% end %>
+      </small>
+    <% end %>
+   </h1>
   <div class='pull-right'>
     <h4>tracking src="http://<%= request.env["HTTP_HOST"] %>/t/<%= @pixel.code_or_default %>"</h4>
-    <h4>redirect href="http://<%= request.env["HTTP_HOST"] %>/r/<%= @pixel.target_url_or_default %>"</h4>
+    <h4>redirect href="http://<%= request.env["HTTP_HOST"] %>/r/<%= @pixel.code_or_default %>"</h4>
   </div>
 </div>
 <div class='row-fluid'>

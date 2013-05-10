@@ -3,21 +3,31 @@
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize %>
   <%= link_to t('.new', :default => t("helpers.links.new")),
           new_pixel_path,
-          :class => 'btn btn-large btn-success pull-right' %></h1>
+          :class => 'btn btn-large btn-success pull-right' %> 
+          <% unless @tags.blank? %>
+            <small>tagged with 
+              <% @tags.split(',').each_with_index do |tag, i| %>
+                <%= ", " if i != 0 %>"<%= tag %>"
+              <% end %>
+            </small>
+          <% end %>
+
+           </h1>
 </div>
 <table class="table table-striped table-bordered">
   <thead>
     <tr>
       <th></th>
       <th><%= model_class.human_attribute_name(:tracking_code) %> | <%= model_class.human_attribute_name(:target_url) %></th>
+      <!-- TODO color CTR based on reletive rank in the tag -->
       <th><%= model_class.human_attribute_name(:CTR) %></th>
       <th>
         <%= model_class.human_attribute_name(:uniques) %> out of all  
-        <%= model_class.human_attribute_name(:hits) %>
+        <span class="label label-info"><%= model_class.human_attribute_name(:hits) %></span>
       </th>
       <th>
         <%= model_class.human_attribute_name(:unique_clicks) %> out of all 
-        <%= model_class.human_attribute_name(:clicks) %>
+        <span class="label label-success"><%= model_class.human_attribute_name(:clicks) %></span> 
       </th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%= model_class.human_attribute_name(:last_hit) %></th>
@@ -25,35 +35,6 @@
     </tr>
   </thead>
   <tbody>
-    <% @pixels.each do |pixel| %>
-      <tr>
-        <td><%= link_to "Show", pixel_path(pixel), :class => 'btn btn-primary' %></td>
-        <td>
-          <pre><%= pixel.code ? pixel.code : '(target_url)' %></pre>
-          <br>
-          <small><pre><%= link_to pixel.target_url, pixel.target_url, :rel => 'nofollow' if pixel.target_url %></pre></small>
-        </td>
-        <td><%= pixel.ctr.round(3) %>%</td>
-        <td>
-          <%= pixel.uniques.count %> U /
-          <%= pixel.hits.count %> T
-        </td>
-        <td>
-          <%= pixel.unique_clicks.count %> UC / 
-          <%= pixel.clicks.count %> TC
-        </td>
-        <td><%= timeago pixel.created_at %></td>
-        <td><%= timeago (pixel.hits.last.created_at) if pixel.hits.any? %></td>
-        <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_pixel_path(pixel), :class => 'btn btn-mini' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      pixel_path(pixel),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-mini btn-danger' %>
-        </td>
-      </tr>
-    <% end %>
+    <%= render @pixels %>
   </tbody>
 </table>

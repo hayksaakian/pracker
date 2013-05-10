@@ -54,7 +54,11 @@ class PixelsController < ApplicationController
   # GET /pixels
   # GET /pixels.json
   def index
-    @pixels = Pixel.all.order_by([:updated_at, :desc])
+    @tags = params[:tag].present? ? params[:tag] : ""
+    # might want to sanitize
+    @pixels = Pixel.tagged_with_all(@tags) unless @tags.blank?
+    @pixels = Pixel.all if @tags.blank?
+    @pixels = @pixels.order_by([:updated_at, :desc]) 
 
     respond_to do |format|
       format.html # index.html.erb

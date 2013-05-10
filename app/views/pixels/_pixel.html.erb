@@ -1,0 +1,36 @@
+  <tr>
+    <td>
+      <%= link_to "Show", pixel_path(pixel), :class => 'btn btn-primary btn-block' %>
+      <div class='tags'>
+        <% pixel.tags_array.each do |tag| %>
+          <%= link_to pixels_path(:tag => tag.to_s) do %>
+            <span class="label label-inverse"><%= tag.to_s %></span>
+          <% end %>
+        <% end %>
+      </div>
+    </td>
+    <td>
+      <pre><%= pixel.code ? pixel.code : '(target_url)' %></pre>
+      <small><pre><%= link_to pixel.target_url, pixel.target_url, :rel => 'nofollow' if pixel.target_url %></pre></small>
+    </td>
+    <td><%= pixel.ctr.round(3) %>%</td>
+    <td>
+      <span class="badge badge-info"><%= pixel.uniques.count %></span> U /
+      <span class="badge"><%= pixel.hits.count %></span> T
+    </td>
+    <td>
+      <span class="badge badge-success"><%= pixel.unique_clicks.count %></span> UC / 
+      <span class="badge"><%= pixel.clicks.count %></span> TC
+    </td>
+    <td><%= timeago pixel.created_at %></td>
+    <td><%= timeago (pixel.hits.last.created_at) if pixel.hits.any? %></td>
+    <td>
+      <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                  edit_pixel_path(pixel), :class => 'btn btn-mini' %>
+      <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                  pixel_path(pixel),
+                  :method => :delete,
+                  :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                  :class => 'btn btn-mini btn-danger' %>
+    </td>
+  </tr>
