@@ -91,6 +91,37 @@ class PixelsController < ApplicationController
     end
     @totals = []
     @click_totals = []
+    @browser_raw_data = {}
+    @os_raw_data = {}
+    @referrer_raw_data = {}
+    @geo_raw_data = {}
+    @hits.each do |h|
+      b = h.browser_name
+      o = h.os_name
+      z = h.zip_code
+      r = h.referrer
+
+      @browser_raw_data[b] = (@browser_raw_data[b].is_a?(Integer) ? @browser_raw_data[b] + 1 : 1)
+      @os_raw_data[o] = (@os_raw_data[o].is_a?(Integer) ? @os_raw_data[o] + 1 : 1)
+      @geo_raw_data[z] = (@geo_raw_data[z].is_a?(Integer) ? @geo_raw_data[z] + 1 : 1)
+      @referrer_raw_data[r] = (@referrer_raw_data[r].is_a?(Integer) ? @referrer_raw_data[r] + 1 : 1)
+    end
+    @browser_data = []
+    @browser_raw_data.each do |k, v|
+      @browser_data.push([(k.blank? ? "Unknown" : k), v])
+    end
+    @os_data = []
+    @os_raw_data.each do |k, v|
+      @os_data.push([(k.blank? ? "Unknown" : k), v])
+    end
+    @geo_data = []
+    @geo_raw_data.each do |k, v|
+      @geo_data.push([(k.blank? ? "Unknown" : k), v])
+    end
+    @referrer_data = []
+    @referrer_raw_data.each do |k, v|
+      @referrer_data.push([(k.blank? ? "Unknown" : k), v])
+    end
     # puts @days
     @days.each do |d|
       # these nasty queries should be somewhere else

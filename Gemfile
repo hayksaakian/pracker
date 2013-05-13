@@ -33,6 +33,7 @@ gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'turbolinks'
 gem 'highcharts-rails'
+gem 'chartkick'
 gem 'cache_digests'
 
 gem "devise", "~> 2.2.3"

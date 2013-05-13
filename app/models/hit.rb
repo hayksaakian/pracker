@@ -101,6 +101,19 @@ class Hit
       return ""
     end
   end
+  def browser_name
+    self.nice_ua.try(:fetch, 'device', {}).try(:fetch, 'engine', {}).try(:fetch, 'browser', {}).try(:fetch, 'name', "")
+  end
+  def os_name
+    self.nice_ua.try(:fetch, 'device', {}).try(:fetch, 'operating_system', {}).try(:fetch, 'name', "")
+  end
+  def zip_code
+    if self.geo
+      self.geo.postal_code
+    else
+      ""
+    end
+  end
   def touch_up
     self.pixel.touch
   end

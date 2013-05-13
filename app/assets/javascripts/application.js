@@ -13,12 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
-//= require highcharts
 //= require jquery.timeago
 //= require_tree .
-if(typeof chart_opts === 'undefined'){
-	chart_opts = {categories:[], series:[]}	
-}
 jQuery(document).ready(function() {
   jQuery("abbr.timeago").timeago();
 });

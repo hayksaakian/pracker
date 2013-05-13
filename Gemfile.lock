@@ -40,6 +40,8 @@ GEM
       actionpack (>= 3.2)
       thread_safe
     cancan (1.6.9)
+    chartkick (0.0.3)
+      railties (>= 3.1)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -179,6 +181,7 @@ DEPENDENCIES
   bson_ext
   cache_digests
   cancan
+  chartkick
   coffee-rails (~> 3.2.1)
   devise (~> 2.2.3)
   foreman
