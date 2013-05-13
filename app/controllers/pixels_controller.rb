@@ -123,6 +123,8 @@ class PixelsController < ApplicationController
       @referrer_data.push([(k.blank? ? "Unknown" : k), v])
     end
     # puts @days
+    @hit_data = {}
+    @click_data = {}
     @days.each do |d|
       # these nasty queries should be somewhere else
       # puts 'after'
@@ -131,17 +133,28 @@ class PixelsController < ApplicationController
       # puts d.to_time
       hits = @pixel.hits.where({:created_at.gt => (d - 1).to_time, :created_at.lte => d.to_time})
       if just_uniques
-        @totals.push(hits.distinct(:request_ip).count) # TODO make sure these .count's actually do what they should
-        @click_totals.push(hits.where(:clicked => true).distinct(:request_ip).count)
+        @hit_data[d] = (hits.distinct(:request_ip).count) # TODO make sure these .count's actually do what they should
+        @click_data[d] = (hits.where(:clicked => true).distinct(:request_ip).count)
       else
-        @totals.push(hits.count) # TODO make sure these .count's actually do what they should
-        @click_totals.push(hits.where(:clicked => true).count)
+        @hit_data[d] = (hits.count) # TODO make sure these .count's actually do what they should
+        @click_data[d] = (hits.where(:clicked => true).count)
       end
     end
 
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @pixel }
+    end
+  end
+
+  def geocoded
+    @pixel = Pixel.find(params[:pixel_id])
+    @hits = @pixel.hits
+    @geo_data = @hits.map{|h| h.nice_geo_for_heatmap }
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @geo_data }
     end
   end
 

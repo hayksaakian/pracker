@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require jquery.timeago
+//= require heatmap
+//= require heatmap-gmaps
 //= require_tree .
 jQuery(document).ready(function() {
   jQuery("abbr.timeago").timeago();

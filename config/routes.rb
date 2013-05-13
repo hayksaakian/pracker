@@ -1,5 +1,7 @@
 Pracker::Application.routes.draw do
-  resources :pixels
+  resources :pixels do
+    get 'geocoded'
+  end
   # get '/tags/show' => 'tags#show', :as => :tag
   # get '/tags' => 'tags#index', :as => :tags
   root :to => 'pixels#index'

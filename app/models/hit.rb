@@ -114,6 +114,20 @@ class Hit
       ""
     end
   end
+  def nice_geo
+    if self.geo
+      {:lat => self.geo.latitude, :lng => self.geo.longitude}
+    else
+      {:lat => "", :lng => ""}
+    end    
+  end
+  def nice_geo_for_heatmap
+    if self.geo
+      {:lat => self.geo.latitude, :lng => self.geo.longitude, :count => 1}
+    else
+      {:lat => "", :lng => "", :count => 1}
+    end  
+  end
   def touch_up
     self.pixel.touch
   end
