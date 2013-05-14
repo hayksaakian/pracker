@@ -39,22 +39,21 @@
 </div>
 <div class="row-fluid">
   <!-- browser graph -->
-  <div class='span4' id='browsers_chart' style='height:300px;'>
+  <div class='span6' id='browsers_chart' style='height:300px;'>
     <%= pie_chart @browser_data %>
   </div>
   <!-- operating system / platform graph -->
-  <div class='span4' id='os_chart' style='height:300px;'>
+  <div class='span6' id='os_chart' style='height:300px;'>
     <%= pie_chart @os_data %>
-  </div>
-  <!-- referrers graph -->
-  <div class='span4' id='referrers_chart' style='height:300px;'>
-    <%= pie_chart @referrer_data %>
   </div>
 </div>
 <div class="row-fluid">
   <!-- countries -->
-  <div class='span12' id='heatmapArea'>
-
+  <div class='span6' id='heatmapArea'>
+  </div>
+  <!-- referrers graph -->
+  <div class='span6' id='referrers_chart' style='height:300px;'>
+    <%= column_chart @referrer_data %>
   </div>
 </div>
 
