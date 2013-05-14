@@ -142,7 +142,7 @@ class PixelsController < ApplicationController
         @hit_data[d] = (hits.count) # TODO make sure these .count's actually do what they should
         @click_data[d] = (hits.where(:clicked => true).count)
       end
-      @ctr_data[d] = (@hit_data[d] == 0 ? 0 : @click_data[d].to_f / @hit_data[d].to_f)
+      @ctr_data[d] = (@hit_data[d] == 0 ? 0 : 100.to_f * (@click_data[d].to_f / @hit_data[d].to_f))
     end
 
     respond_to do |format|
