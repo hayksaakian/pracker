@@ -34,7 +34,7 @@
 <small>Redirect URL:  <%=  @pixel.target_url.blank? ? "(not yet specified)" : link_to(@pixel.target_url) %></small>
 <div class='well'>
   <div id="hits_chart" class="span12" style="height:350px;">
-    <%= line_chart [{:name => 'Hits', :data => @hit_data}, {:name => 'Clicks', :data => @click_data}] %>
+    <%= line_chart [{:name => 'Hits', :data => @hit_data}, {:name => 'Clicks', :data => @click_data}, {:name => 'CTR', :data => @ctr_data}] %>
   </div>
 </div>
 <div class="row-fluid">
