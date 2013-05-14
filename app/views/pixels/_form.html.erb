@@ -3,7 +3,25 @@
 	<div class="form-inputs">
 	  <%= f.input :code %>
 	  <%= f.input :target_url %>
-	  <%= f.input :tags %>
+<!-- 	  <small>tags are comma separated. ex: tag 1, tag 2, tag 3</small>
+ -->	  <%= f.input :tags, :hint => "tags are comma separated. ex: tag 1, tag 2, tag 3" %>
+	  <div class='control-group'>
+	  	<label class='control-label'>Existing Tags:</label>
+	  	<div class='controls'>
+	  		<div class='well'>
+	  			<% Pixel.tags_with_weight.each_with_index do |tag, i| %><%
+			      retval = "" 
+			      if tag.is_a? Array
+			        href = pixels_path(:tag => tag[0])
+			        retval = ("<span class='label label-inverse'>#{tag[0].to_s} <span class='badge'>#{tag[1].to_i.to_s}</span></span>").html_safe
+			      elsif tag.is_a? String
+			        href = pixels_path(:tag => tag)
+			        retval = "<span class='label label-inverse'>#{tag}</span>".html_safe
+			      end %><a href="<%= href %>"><%= retval %></a>
+			    <% end %>
+	  		</div>
+	  	</div>
+	  </div>
 	</div>
 
   <div class="form-actions">
