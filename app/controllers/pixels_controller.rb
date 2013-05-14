@@ -123,6 +123,7 @@ class PixelsController < ApplicationController
     @referrer_raw_data.each do |k, v|
       @referrer_data.push([(k.blank? ? "Unknown" : k), v])
     end
+    @referrer_data = @referrer_data.sort_by {|i| -(i[1])} 
     # puts @days
     @hit_data = {}
     @click_data = {}
