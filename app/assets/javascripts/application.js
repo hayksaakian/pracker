@@ -18,6 +18,7 @@
 //= require chartkick
 //= require heatmap
 //= require heatmap-gmaps
+//= require bootstrap-sortable
 //= require_tree .
 jQuery(document).ready(function() {
   jQuery("abbr.timeago").timeago();
