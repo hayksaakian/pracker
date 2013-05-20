@@ -14,7 +14,7 @@
     <pre><%= pixel.code ? pixel.code : '(target_url)' %></pre>
     <small><pre><%= link_to pixel.target_url, pixel.target_url, :rel => 'nofollow' if pixel.target_url %></pre></small>
   </td>
-  <td><%= pixel.ctr.round(3) %>%</td>
+  <td class='pixel-ctr'><%= pixel.ctr.round(3) %></td>
   <td>
     <span class="badge badge-info"><%= pixel.uniques.count %></span> U /
     <span class="badge"><%= pixel.hits.count %></span> T

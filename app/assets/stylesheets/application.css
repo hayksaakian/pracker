@@ -33,3 +33,7 @@ pre {
 	white-space: -hp-pre-wrap;  /* HP Printers */
 	word-wrap: break-word;      /* IE 5+ */
 }
+
+.pixel-ctr:after {
+	content: "%";
+}
