@@ -85,7 +85,7 @@
   <tbody>
     <% @hits.each do |hit| %>
       <tr>
-        <td><%= hit.clicked ? "<i class='icon-ok'></i>".html_safe : "" %></td>
+        <td data-value="<%= hit.clicked ? 1 : 0 %>"><%= hit.clicked ? "<i class='icon-ok'></i>".html_safe : "" %></td>
         <td><%= (hit.geo.to_pretty_s+"<br>").html_safe if hit.geo %><small><%= hit.request_ip %></small></td>
         <td><%= timeago(hit.created_at) %></td>
         <td><%= (hit.pretty_ua+"<br>").html_safe if hit.nice_ua != {} %><small><%= hit.agent %></small></td>
