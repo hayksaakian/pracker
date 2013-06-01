@@ -35,6 +35,42 @@ class Hit
 	# 	71.217.122.251: null
 	# }
 
+  def self.hit_data(hits, days, just_uniques)
+    just_uniques = false if just_uniques.nil?
+    data_hash = {
+      :browser => {},
+      :os => {},
+      :geo => {},
+      :referrer => {},
+      :hit => {},
+      :click => {:never => 0}
+    }
+    data_hash_keys = [:browser, :os, :geo, :referrer, :hit, :click]
+
+    days.each do |d|
+      data_hash[:hit][d] = 0
+      data_hash[:click][d] = 0
+    end
+
+    hits.each do |h|
+      arr = [h.browser_name, h.os_name, h.zip_code, h.referrer, h.created_at.to_date, (h.clicked ? h.created_at.to_date : :never)]
+      data_hash_keys.each_with_index do |k, i|
+        arr[i] = "Unknown" if arr[i].blank?
+        data_hash[k][arr[i]] = data_hash[k][arr[i]].is_a?(Integer) ? data_hash[k][arr[i]] + 1 : 1
+      end
+    end
+
+    # calculate CTRs for each day
+    data_hash[:ctr] = {}
+    days.each do |d|
+      data_hash[:ctr][d] = (data_hash[:hit][d] == 0 ? 0 : 100.to_f * (data_hash[:click][d].to_f / data_hash[:hit][d].to_f))
+    end
+    # delete data about the hits that are not also clicks
+    data_hash[:click].delete(:never)
+
+    return data_hash
+  end
+
   def consider_geolocating
     if !self.request_ip.blank?
       if self.geo.nil? || self.geo.ip != self.request_ip

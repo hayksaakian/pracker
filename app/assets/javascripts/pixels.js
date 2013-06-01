@@ -3,7 +3,7 @@
 // # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 var map;
 var heatmap;
-var mapData;
+var mapData = null;
 
 window.onload = function(){
   if($('#heatmapArea').length > 0){
@@ -26,22 +26,31 @@ window.onload = function(){
     heatmap = new HeatmapOverlay(map, {"radius":10, "visible":true, "opacity":60});
 
     var geocoded_clicks_path = "/home/geocoded_clicks"
-
-    if ($('#pixel_data').length > 0){
-  	  geocoded_clicks_path = $('#pixel_data').attr('data-geo-path')
-    }
-    console.log(geocoded_clicks_path)
-    $.ajax({
-      type: "GET",
-      dataType: "json",
-      url: geocoded_clicks_path,
-      success: function(data){ 
-        mapData={
-          max: 46,
-          data: data
+    var $pixel_data = $('#pixel_data');
+    if ($pixel_data.length > 0){
+  	  geocoded_clicks_path = $pixel_data.data('geo-path');
+      if($pixel_data.data('hash-geo') != undefined){
+        console.log($pixel_data.data('hash-geo'))
+        mapData = {
+          max: 300,
+          data: $pixel_data.data('hash-geo')
         };
       }
-    });
+    }
+    console.log(geocoded_clicks_path)
+    if (mapData == null){
+      $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: geocoded_clicks_path,
+        success: function(data){ 
+          mapData={
+            max: 300,
+            data: data
+          };
+        }
+      }); 
+    }
   	google.maps.event.addListenerOnce(map, "idle", function(){
       heatmap.setDataSet(mapData);
     });

@@ -60,10 +60,32 @@ class PixelsController < ApplicationController
       @pixels = Pixel.all
       @tags = Pixel.tags_with_weight
     else
-      @pixels = Pixel.tagged_with_all(@tags)
       @tags = @tags.split(',')
+      @pixels = Pixel.tagged_with_all(@tags)
+      @showgraph = true
+      just_uniques = params[:unique].present? ? true : false
+      today = Time.now.to_date
+      pd = params[:days]
+      @days = []
+      if pd && !pd.blank?
+        num_days = pd.to_i
+        @days = ((today-num_days)..today).to_a
+        oldest = @days.first
+      else
+        # if days are unspecified, start from the oldest
+        oldest = @pixels.first.created_at
+        @days = ((oldest.to_date)..today).to_a
+      end
+      @pixels = @pixels.where(:updated_at.gte => @days.first) if !pd.blank?
+      @hits = @pixels.map{|p| p.hits.where({:created_at.gte => oldest, :created_at.lte => @days.last})}.flatten(1)
+      @data_hash = Hit.hit_data(@hits, @days, just_uniques)
+
+      @data_hash[:total_hits] = @data_hash[:hit].values.reduce(:+)
+      @data_hash[:total_clicks] = @data_hash[:click].values.reduce(:+)
+      @data_hash[:total_unique_hits] = @pixels.inject(0) { |sum, n|  sum + n.uniques_after(oldest).count }
+      @data_hash[:total_unique_clicks] = @pixels.inject(0) { |sum, n|  sum + n.unique_clicks_after(oldest).count }
     end
-    @pixels = @pixels.order_by([:updated_at, :desc]) 
+    @pixels = @pixels.order_by([:created_at, :desc]) 
 
     respond_to do |format|
       format.html # index.html.erb
@@ -75,10 +97,9 @@ class PixelsController < ApplicationController
   # GET /pixels/1.json
   def show
     @pixel = Pixel.find(params[:id])
-    @hits = @pixel.hits.reverse
-    @clicks = @pixel.hits.where(:clicked => true) || []
-    @uniques = @pixel.uniques
-    @unique_clicks = @clicks.distinct(:request_ip) || []
+    # @clicks = @pixel.hits.where(:clicked => true) || []
+    # @uniques = @pixel.uniques
+    # @unique_clicks = @clicks.distinct(:request_ip) || []
     today = Time.now.to_date
     @days = []
     pd = params[:days]
@@ -86,64 +107,22 @@ class PixelsController < ApplicationController
     if pd && !pd.blank?
       num_days = pd.to_i
       @days = ((today-num_days)..today).to_a
+      oldest = @days.first
+      @hits = @pixel.hits.where({:created_at.gte => oldest})
     else
-      @days = ((@pixel.created_at.to_date)..today).to_a
+      # if days are unspecified, start from the oldest
+      oldest = @pixel.created_at
+      @days = ((oldest.to_date)..today).to_a
+      @hits = @pixel.hits
     end
-    @totals = []
-    @click_totals = []
-    @ctr_totals = []
-    @browser_raw_data = {}
-    @os_raw_data = {}
-    @referrer_raw_data = {}
-    @geo_raw_data = {}
-    @hits.each do |h|
-      b = h.browser_name
-      o = h.os_name
-      z = h.zip_code
-      r = h.referrer
+    @data_hash = Hit.hit_data(@hits, @days, just_uniques)
 
-      @browser_raw_data[b] = (@browser_raw_data[b].is_a?(Integer) ? @browser_raw_data[b] + 1 : 1)
-      @os_raw_data[o] = (@os_raw_data[o].is_a?(Integer) ? @os_raw_data[o] + 1 : 1)
-      @geo_raw_data[z] = (@geo_raw_data[z].is_a?(Integer) ? @geo_raw_data[z] + 1 : 1)
-      @referrer_raw_data[r] = (@referrer_raw_data[r].is_a?(Integer) ? @referrer_raw_data[r] + 1 : 1)
-    end
-    @browser_data = []
-    @browser_raw_data.each do |k, v|
-      @browser_data.push([(k.blank? ? "Unknown" : k), v])
-    end
-    @os_data = []
-    @os_raw_data.each do |k, v|
-      @os_data.push([(k.blank? ? "Unknown" : k), v])
-    end
-    @geo_data = []
-    @geo_raw_data.each do |k, v|
-      @geo_data.push([(k.blank? ? "Unknown" : k), v])
-    end
-    @referrer_data = []
-    @referrer_raw_data.each do |k, v|
-      @referrer_data.push([(k.blank? ? "Unknown" : k), v])
-    end
-    @referrer_data = @referrer_data.sort_by {|i| -(i[1])} 
-    # puts @days
-    @hit_data = {}
-    @click_data = {}
-    @ctr_data = {}
-    @days.each do |d|
-      # these nasty queries should be somewhere else
-      # puts 'after'
-      # puts (d.to_time - 1)
-      # puts 'before or on'
-      # puts d.to_time
-      hits = @pixel.hits.where({:created_at.gt => (d - 1).to_time, :created_at.lte => d.to_time})
-      if just_uniques
-        @hit_data[d] = (hits.distinct(:request_ip).count) # TODO make sure these .count's actually do what they should
-        @click_data[d] = (hits.where(:clicked => true).distinct(:request_ip).count)
-      else
-        @hit_data[d] = (hits.count) # TODO make sure these .count's actually do what they should
-        @click_data[d] = (hits.where(:clicked => true).count)
-      end
-      @ctr_data[d] = (@hit_data[d] == 0 ? 0 : 100.to_f * (@click_data[d].to_f / @hit_data[d].to_f))
-    end
+    @data_hash[:total_hits] = @data_hash[:hit].values.reduce(:+)
+    @data_hash[:total_clicks] = @data_hash[:click].values.reduce(:+)
+    @data_hash[:total_unique_hits] = @pixel.uniques_after(oldest).count
+    @data_hash[:total_unique_clicks] = @pixel.unique_clicks_after(oldest).count
+
+    @hits = @hits.reverse
 
     respond_to do |format|
       format.html # show.html.erb

@@ -11,14 +11,24 @@ class Pixel
   def uniques
   	self.hits.distinct(:request_ip) || []
   end
+  def uniques_after(date_or_time)
+    self.hits.where(:created_at.gte => date_or_time).distinct(:request_ip) || []
+  end
   def clicks
   	self.hits.where(:clicked => true) || []
   end
   def unique_clicks
   	self.hits.where(:clicked => true).distinct(:request_ip) || []
   end
+  def unique_clicks_after(date_or_time)
+    self.hits.where({:created_at.gte => date_or_time, :clicked => true}).distinct(:request_ip) || []
+  end
   def ctr
     (self.unique_clicks.count > 0) ? ((self.unique_clicks.count * 100.00 ) / self.uniques.count) : 0.000
+  end
+
+  def self.hit_data
+    return "self.id"
   end
 
   def self.flush(ip)
