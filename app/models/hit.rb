@@ -35,8 +35,8 @@ class Hit
 	# 	71.217.122.251: null
 	# }
 
-  def self.hit_data(hits, days, just_uniques)
-    just_uniques = false if just_uniques.nil?
+  def self.hit_data(hits, days)
+
     data_hash = {
       :browser => {},
       :os => {},
@@ -67,6 +67,9 @@ class Hit
     end
     # delete data about the hits that are not also clicks
     data_hash[:click].delete(:never)
+
+    data_hash[:total_hits] = data_hash[:hit].values.reduce(:+)
+    data_hash[:total_clicks] = data_hash[:click].values.reduce(:+)
 
     return data_hash
   end

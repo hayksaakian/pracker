@@ -34,11 +34,13 @@
     <form method='get' class='form-inline pull-right' style='margin: 14px;'>
       <fieldset>
         Show 
+        <%= hidden_field_tag(:tag, params[:tag].is_a?(Array) ? params[:tag].join(',') : params[:tag]) %>
         <%= select_tag 'days', options_for_select(["1", "3", "7", "30", '91', ['All', ""] ], params[:days].present? ? params[:days] : ""), :class => 'input-mini' %>
+          <!-- 
+            This does not make sense, depricated.
           <label class="checkbox">
-            <%= check_box_tag 'unique', true, params[:unique] %> Only Unique?
-          </label>
-          <%= hidden_field_tag(:tag, params[:tag].is_a?(Array) ? params[:tag].join(',') : params[:tag]) %>
+            <%#= check_box_tag 'unique', true, params[:unique] %> Only Unique?
+          </label> -->
         <button type="submit" class="btn btn-primary">Days Back</button>
       </fieldset>
     </form>

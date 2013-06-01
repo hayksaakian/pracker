@@ -63,9 +63,10 @@ class PixelsController < ApplicationController
       @tags = @tags.split(',')
       @pixels = Pixel.tagged_with_all(@tags)
       @showgraph = true
-      just_uniques = params[:unique].present? ? true : false
+
       today = Time.now.to_date
       pd = params[:days]
+      # TODO: accept an actual date range instead of just X days back
       @days = []
       if pd && !pd.blank?
         num_days = pd.to_i
@@ -77,11 +78,13 @@ class PixelsController < ApplicationController
         @days = ((oldest.to_date)..today).to_a
       end
       @pixels = @pixels.where(:updated_at.gte => @days.first) if !pd.blank?
-      @hits = @pixels.map{|p| p.hits.where({:created_at.gte => oldest, :created_at.lte => @days.last})}.flatten(1)
-      @data_hash = Hit.hit_data(@hits, @days, just_uniques)
+      @hits = @pixels.map{|p| p.hits.where({:created_at.gte => oldest}) }.flatten(1)
+      @data_hash = Hit.hit_data(@hits, @days)
 
-      @data_hash[:total_hits] = @data_hash[:hit].values.reduce(:+)
-      @data_hash[:total_clicks] = @data_hash[:click].values.reduce(:+)
+      # BUG: the total hits will be off by one if the first 
+      # hit caused the creation of the pixel.
+      # this may occur in other cases as well...
+
       @data_hash[:total_unique_hits] = @pixels.inject(0) { |sum, n|  sum + n.uniques_after(oldest).count }
       @data_hash[:total_unique_clicks] = @pixels.inject(0) { |sum, n|  sum + n.unique_clicks_after(oldest).count }
     end
@@ -97,13 +100,9 @@ class PixelsController < ApplicationController
   # GET /pixels/1.json
   def show
     @pixel = Pixel.find(params[:id])
-    # @clicks = @pixel.hits.where(:clicked => true) || []
-    # @uniques = @pixel.uniques
-    # @unique_clicks = @clicks.distinct(:request_ip) || []
     today = Time.now.to_date
     @days = []
     pd = params[:days]
-    just_uniques = params[:unique].present? ? true : false
     if pd && !pd.blank?
       num_days = pd.to_i
       @days = ((today-num_days)..today).to_a
@@ -115,10 +114,11 @@ class PixelsController < ApplicationController
       @days = ((oldest.to_date)..today).to_a
       @hits = @pixel.hits
     end
-    @data_hash = Hit.hit_data(@hits, @days, just_uniques)
+    @data_hash = Hit.hit_data(@hits, @days)
 
-    @data_hash[:total_hits] = @data_hash[:hit].values.reduce(:+)
-    @data_hash[:total_clicks] = @data_hash[:click].values.reduce(:+)
+    # BUG: the total hits will be off by one if the first 
+    # hit caused the creation of the pixel.
+    # this may occur in other cases as well...
     @data_hash[:total_unique_hits] = @pixel.uniques_after(oldest).count
     @data_hash[:total_unique_clicks] = @pixel.unique_clicks_after(oldest).count
 
