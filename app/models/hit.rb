@@ -62,14 +62,19 @@ class Hit
 
     # calculate CTRs for each day
     data_hash[:ctr] = {}
-    days.each do |d|
-      data_hash[:ctr][d] = (data_hash[:hit][d] == 0 ? 0 : 100.to_f * (data_hash[:click][d].to_f / data_hash[:hit][d].to_f))
-    end
+
     # delete data about the hits that are not also clicks
     data_hash[:click].delete(:never)
 
     data_hash[:total_hits] = data_hash[:hit].values.reduce(:+)
     data_hash[:total_clicks] = data_hash[:click].values.reduce(:+)
+
+    top_of_graph = 100.to_f
+    top_of_graph = [data_hash[:hit].values.max, data_hash[:click].values.max].max
+
+    days.each do |d|
+      data_hash[:ctr][d] = (data_hash[:hit][d] == 0 ? 0 : top_of_graph * (data_hash[:click][d].to_f / data_hash[:hit][d].to_f))
+    end
 
     return data_hash
   end
