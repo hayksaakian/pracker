@@ -26,7 +26,7 @@
     <table class='table table-striped sortable'>
       <thead><td>Hits</td><td>Referrer</td></thead>
       <tbody>
-        <% @data_hash[:referrer].each do |v, k| %>
+        <% @data_hash[:referrer].sort_by{|k,v| v}.reverse.each do |v, k| %>
           <tr><td><%= k %></td><td><%= v %></td></tr>
         <% end %>
       </tbody>
