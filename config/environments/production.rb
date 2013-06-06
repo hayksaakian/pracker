@@ -15,7 +15,7 @@ Pracker::Application.configure do
     :password       => ENV['MAILGUN_SMTP_PASSWORD'],
     # get a custom domain on mailgun
     # :domain         => 'limovoy.com',
-    :domain         => ENV['MAILGUN_SMTP_LOGIN'].split('@')[1],
+    :domain         => "app15043681.mailgun.org", # hardcoded because otherwise rails shits itself
     :authentication => :plain,
 
   }
