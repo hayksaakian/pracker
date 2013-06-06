@@ -1,4 +1,6 @@
 Pracker::Application.routes.draw do
+  devise_for :users
+
   resources :pixels do
     get 'geocoded'
   end

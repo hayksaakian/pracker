@@ -1,4 +1,6 @@
 class PixelsController < ApplicationController
+  before_filter :authenticate_user!, :only => [:new, :destroy, :create, :index, :show]
+
   def send_blank_gif
     # pic = Base64.decode64("R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==")
     # render text: pic, type: 'image/gif'

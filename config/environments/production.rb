@@ -7,6 +7,20 @@ Pracker::Application.configure do
     ::NewRelic::Agent.after_fork(:force_reconnect => true)
   end
 
+  config.action_mailer.default_url_options = { :host => '1gf.us', :port => 80, :protocol => 'http' }
+  config.action_mailer.smtp_settings = {
+    :port           => ENV['MAILGUN_SMTP_PORT'], 
+    :address        => ENV['MAILGUN_SMTP_SERVER'],
+    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
+    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
+    # get a custom domain on mailgun
+    # :domain         => 'limovoy.com',
+    :domain         => ENV['MAILGUN_SMTP_LOGIN'].split('@')[1],
+    :authentication => :plain,
+
+  }
+  config.action_mailer.delivery_method = :smtp
+
   # Code is not reloaded between requests
   config.cache_classes = true
 
@@ -22,6 +36,7 @@ Pracker::Application.configure do
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = false
+  config.assets.initialize_on_precompile = false
 
   # Generate digests for assets URLs
   config.assets.digest = true
