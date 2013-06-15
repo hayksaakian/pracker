@@ -21,6 +21,11 @@ Pracker::Application.configure do
   }
   config.action_mailer.delivery_method = :smtp
 
+  # config.cache_store = :dalli_store, ENV["MEMCACHIER_SERVERS"].split(","), 
+  #   {:usermame => ENV["MEMCACHIER_USERNAME"], 
+  #   :password => ENV["MEMCACHIER_PASSWORD"]}
+  config.cache_store = :dalli_store
+
   # Code is not reloaded between requests
   config.cache_classes = true
 

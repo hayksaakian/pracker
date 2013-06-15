@@ -50,6 +50,7 @@ GEM
       execjs
     coffee-script-source (1.6.2)
     commonjs (0.2.6)
+    dalli (2.6.4)
     devise (2.2.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -85,6 +86,7 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    memcachier (0.0.2)
     mime-types (1.23)
     mongo (1.8.5)
       bson (~> 1.8.5)
@@ -183,6 +185,7 @@ DEPENDENCIES
   cancan
   chartkick
   coffee-rails (~> 3.2.1)
+  dalli
   devise (~> 2.2.3)
   foreman
   highcharts-rails
@@ -190,12 +193,13 @@ DEPENDENCIES
   jquery-turbolinks
   less-rails
   libv8 (= 3.11.8.13)
+  memcachier
   mongo
   mongoid
   mongoid_taggable
   mustache
   newrelic_rpm
-  rails (~> 3.2.12)
+  rails (~> 3.2.13)
   sass-rails (~> 3.2.3)
   simple_form
   therubyracer

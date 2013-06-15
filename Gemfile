@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 ruby '2.0.0'
-gem 'rails', '~> 3.2.12'
+gem 'rails', '~> 3.2.13'
 gem 'unicorn-rails'
 
 gem 'bson_ext'
@@ -34,6 +34,9 @@ gem 'jquery-turbolinks'
 gem 'turbolinks'
 gem 'highcharts-rails'
 gem 'chartkick'
+
+gem 'dalli'
+gem 'memcachier' # auto sets dalli based on env hash
 gem 'cache_digests'
 
 gem "devise", "~> 2.2.3"

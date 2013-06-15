@@ -8,6 +8,8 @@ Pracker::Application.configure do
 
   CacheDigests::TemplateDigestor.cache = ActiveSupport::Cache::NullStore.new
 
+  config.cache_store = :dalli_store
+
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
 

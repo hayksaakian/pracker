@@ -59,7 +59,9 @@ class PixelsController < ApplicationController
     @tags = params[:tag].present? ? params[:tag] : ""
     # might want to sanitize
     if @tags.blank?
-      @pixels = Pixel.all
+      # .all is a nightmare, need sane defaults
+      @pixels = Pixel.tagged_with(nil)
+      flash[:warning] = "Limiting pixels to those without tags for sake of speed. Pick a specific tag if you would like to see more pixels."
       @tags = Pixel.tags_with_weight
     else
       @tags = @tags.split(',')
@@ -93,7 +95,7 @@ class PixelsController < ApplicationController
     @pixels = @pixels.order_by([:created_at, :desc]) 
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html
       format.json { render json: @pixels }
     end
   end
