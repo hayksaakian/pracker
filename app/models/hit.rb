@@ -12,6 +12,10 @@ class Hit
 
   field :clicked, type: Boolean, default: false
 
+  def age
+    return self.created_at - self.pixel.created_at
+  end
+
   after_save :consider_geolocating, :consider_device_analysis, :touch_up
 
   # http://www.datasciencetoolkit.org/ip2coordinates/71.217.122.251

@@ -8,6 +8,8 @@ Pracker::Application.routes.draw do
   # get '/tags' => 'tags#index', :as => :tags
   root :to => 'pixels#index'
 
+  get '/report' => 'pixels#report'
+
   # pixel tracking
   get '/t/*code_or_url' => 'pixels#track', :as => :track, :format => false, :constraints => {:url => /.*/}, :escape => false
   get '/t' => 'pixels#track'
